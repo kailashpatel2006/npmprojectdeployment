@@ -69,82 +69,36 @@ Jenkins Configuration and job setup:
 	Login as admin user 
 	Password copy from /var/lib/jenkins/secrets/initialAdminPassword
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---------------
 After login with initial password, you are ready to go for create a new Jenkins jobs.
 
-
-
- 
-
-
-
-
-
-
+-------------------
 Install all required plugin 
 Git
 NPM plugin
 Post build script plugin 
-
-
-
-
-
-
-
-
-
-
-
-
-
+--------------
 Now create a new free-style project job:
 
 
  
-
+---------------------
 Source code management:
 
 a.	Configure SCM>Git and provide the url https://github.com/ahfarmer/emoji-search.git 
 
 b.	Select ‘GitHub hook trigger for GITScm polling” to pull and build code on every new check-in push.
 
- 
+ -
 
-
-
-
-
-
+------------
 Build: After configuring the source control section we’ll need to configure the build step.  For Node.js, building only consists of installing dependencies, but you could easily have unit testing and other testing in this step as well.
-
-
- 
-
-
-
-
-
-
+----------
 Post build script plugin:
 This plugin we install to run post build command:
-Npm stop
-Npm start
+1. Npm stop
+2. Npm start
+---------------
 In this we will be deploying the application locally on your machine. Probably not the case in your production.
 
 Before starting the application, we are stopping any already running instance of it.  Once stopped we can start the new version.
@@ -152,14 +106,14 @@ Before starting the application, we are stopping any already running instance of
  
 
 
-
+------------------------------------------------------------------
 Ansible playbook to install tools:
 
 (if you want to run it on node\slave server to install tools and deploy the app)
 Note: we can use ansible to configure our developer server if it is node\slave. But make sure you update your inventory file with your server name\ip to run ansible playbook on that.
 
 
-
+-----------------------------------------
 - hosts: "{{ hostname }}"
   gather_facts: False
   vars:
@@ -171,7 +125,7 @@ Note: we can use ansible to configure our developer server if it is node\slave. 
         state: present
       with_items: "{{ packages }}"
 
-
+----------------------------------------
 
 Dockerfile Node App Config
 Now we have to create a Dockerfile which will instruct Docker how to deploy the app within a Docker image. Go to the root of the Node project we just created and type touch Dockerfile and put the following into it:
@@ -182,5 +136,8 @@ WORKDIR /app
 COPY . /app
 CMD ["node", "app.js"]
 
-
+---------------------------
 This is basically telling Docker we want to deploy our files to an Alpine Node Docker image (basically a lightweight version of a Node instance). It'll copy over our built files to the Docker image and run the Node app.
+
+
+Note: for screenshots you can reffer attache word doc
